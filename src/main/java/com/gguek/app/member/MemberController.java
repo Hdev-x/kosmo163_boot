@@ -29,7 +29,7 @@ public class MemberController {
 	
 	
 	
-	
+//	sas
 	
 	
 //	@RequestMapping(value = "join", method = RequestMethod.POST)
