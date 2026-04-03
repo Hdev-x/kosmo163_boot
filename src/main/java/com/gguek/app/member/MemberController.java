@@ -1,5 +1,6 @@
 package com.gguek.app.member;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,7 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/member/*")
 public class MemberController {
 
-	
+	@Autowired
+	private MemberService memberService;
 	
 	
 	
@@ -21,6 +23,7 @@ public class MemberController {
 		//파라미터의 이름과 dto의 setter의 이름이 같아야 한다.
 		//타입도 동일해야 함
 		dto.setName(dto.getName());
+		
 		
 		
 		
