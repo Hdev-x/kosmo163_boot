@@ -12,6 +12,8 @@
 			DEPARTMENT_NO
 		FROM
 			TB_PROFESSOR
+		ORDER BY
+		    PROFESSOR_NO DESC
 	</select>
 	
 	<select id="detail" resultType="ProfessorDTO" parameterType="ProfessorDTO">
