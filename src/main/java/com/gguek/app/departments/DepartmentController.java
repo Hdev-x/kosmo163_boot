@@ -29,12 +29,14 @@ public class DepartmentController {
 	
 	
 	@GetMapping("list")
-	public void list(Model model) throws Exception {
-		List<DepartmentDTO> ar = departmentService.list();
+	public String list(@RequestParam(name="page", defaultValue="1") Long page, Model model) throws Exception {
+		List<DepartmentDTO> ar = departmentService.list(page);
+		
 		
 		//request와 비슷한 역할, Spring에서 제공하는 객체
 		//jsp에서 ${list}로 접근 가능
 		model.addAttribute("list", ar);
+		return "department/list";
 	}
 	
 	

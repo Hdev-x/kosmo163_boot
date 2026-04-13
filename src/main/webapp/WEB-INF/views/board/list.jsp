@@ -33,10 +33,11 @@
 						</a>
 					</div>
 
+
+
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">NOTICE
-								List</h6>
+							<h6 class="m-0 font-weight-bold text-primary">NOTICE List</h6>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -70,9 +71,46 @@
 					</div>
 
 
+					<div></div>
 
+					<nav aria-label="Page navigation example">
+						<ul class="pagination">
+							<li class="page-item ${pager2.pre?'':'disabled'}"><a
+								class="page-link"
+								href="./list?page=${pager2.pre?pager2.start-1:pager2.start}&kind=${pager.kind}&search=${pager2.search}"
+								aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+							</a></li>
+							<c:forEach begin="${pager2.start}" end="${pager2.end}" var="i">
+								<li class="page-item"><a class="page-link"
+									href="./list?page=${i}&kind=${pager.kind}&search=${pager2.search}">${i}</a></li>
+							</c:forEach>
 
+							<li class="page-item ${pager2.next?'':'disabled'}"><a
+								class="page-link"
+								href="./list?page=${pager2.next?pager2.end+1:pager2.end}&kind=${pager.kind}&search=${pager2.search}"
+								aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+							</a></li>
+						</ul>
+					</nav>
 
+					<form action="./list" method="get">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<select class="custom-select" name="kind">
+									<option value="v1" ${pager.kind == 'v1' ? 'selected' : ''}>제목</option>
+									<option value="v2" ${pager.kind == 'v2' ? 'selected' : ''}>작성자</option>
+									<option value="v3" ${pager.kind == 'v3' ? 'selected' : ''}>내용</option>
+								</select>
+							</div>
+
+							<input type="text" value="${pager.search}" class="form-control"
+								placeholder="검색어를 입력하세요" aria-label="Recipient's username"
+								name="search" aria-describedby="button-addon2">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" id="button-addon2">검색</button>
+							</div>
+						</div>
+					</form>
 
 				</div>
 				<!-- /.container-fluid -->

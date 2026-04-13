@@ -5,15 +5,31 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gguek.app.professor.mapper.ProfessorMapper">
+
+<sql id="search">
+	WHERE PROFESSOR_NO LIKE '%' || #{search} || '%'
+</sql>
+
+
+
 	<select id="list" resultType="ProfessorDTO">
-		SELECT 
-			PROFESSOR_NO, 
-			PROFESSOR_NAME, 
-			DEPARTMENT_NO
-		FROM
-			TB_PROFESSOR
-		ORDER BY
-		    PROFESSOR_NO DESC
+		SELECT * FROM
+			(
+			SELECT ROWNUM R, T.*
+			FROM
+				(
+				SELECT
+					PROFESSOR_NO, 
+					PROFESSOR_NAME, 
+					DEPARTMENT_NO
+				FROM
+					TB_PROFESSOR
+				<include refid="search"></include>
+				ORDER BY
+				    PROFESSOR_NO DESC
+				)T
+		)
+		WHERE R BETWEEN 1 AND 10;
 	</select>
 	
 	<select id="detail" resultType="ProfessorDTO" parameterType="ProfessorDTO">

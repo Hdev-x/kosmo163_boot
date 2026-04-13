@@ -10,46 +10,62 @@
 	<!-- 쿼리 태그 -->
 	<!-- ID : DAO에서 사용할 메서드명을 ID로 작성 -->
 	<!-- 컬럼명과 resultType의 Bean의 Setter 이름이 같은 걸 찾아서 대입 -->
+	<sql id="search">
+		WHERE
+		<choose>
+			<when test="kind=='v2'">PROFESSOR_NO</when>
+			<when test="kind=='v3'">NOTICE_CONTENTS</when>
+			<otherwise>NOTICE_TITLE</otherwise>
+		</choose>
+		LIKE '%' || #{search} || '%'
+	</sql>
+
+	<select id="getCount" resultType="Long" parameterType="Pager2">
+		SELECT COUNT(NOTICE_NO) FROM TB_NOTICE
+		<include refid="search"></include>
+	</select>
 
 	<!-- list -->
-	<select id="list" resultType="NoticeDTO">
-		<![CDATA[ 
-			SELECT *
-			FROM
-				TB_NOTICE
-			WHERE
-				NOTICE_NO>(SELECT MAX(NOTICE_NO)-10 FROM TB_NOTICE)
-				AND NOTICE_NO <= (SELECT MAX(NOTICE_NO) FROM TB_NOTICE)
-			ORDER BY
-				NOTICE_NO DESC
-			]]>
-	</select>
-
-	<select id="detail" resultType="NoticeDTO" parameterType="NoticeDTO">
-		SELECT
-			*
+	<select id="list" resultType="NoticeDTO" parameterType="Pager2">
+		SELECT * FROM
+		(
+		SELECT ROWNUM R, T.*
 		FROM
-			TB_NOTICE
-		WHERE
-			NOTICE_NO = #{noticeNo}
+		(
+		SELECT *
+		FROM TB_NOTICE
+		<include refid="search"></include>
+		ORDER BY NOTICE_NO DESC
+		) T
+		)
+		WHERE R BETWEEN #{first} AND #{last}
 	</select>
 
-	<insert id="create"
+	<select id="detail" resultType="NoticeDTO"
 		parameterType="NoticeDTO">
+		SELECT
+		*
+		FROM
+		TB_NOTICE
+		WHERE
+		NOTICE_NO = #{noticeNo}
+	</select>
+
+	<insert id="create" parameterType="NoticeDTO">
 		INSERT INTO
-			TB_NOTICE(
-				NOTICE_NO,
-				NOTICE_TITLE,
-				NOTICE_CONTENTS,
-				PROFESSOR_NO
-				)
-			<!-- /* NOTICE_DATE와 NOTICE_VIEWS는 DB의 DEFAULT 설정을 따르도록 생략 */ -->
+		TB_NOTICE(
+		NOTICE_NO,
+		NOTICE_TITLE,
+		NOTICE_CONTENTS,
+		PROFESSOR_NO
+		)
+		<!-- /* NOTICE_DATE와 NOTICE_VIEWS는 DB의 DEFAULT 설정을 따르도록 생략 */ -->
 		VALUES(
-			NOTICE_NO.NEXTVAL,
-			#{noticeTitle},
-			#{noticeContents},
-			#{professorNo}
-			)
+		NOTICE_NO.NEXTVAL,
+		#{noticeTitle},
+		#{noticeContents},
+		#{professorNo}
+		)
 	</insert>
 
 </mapper>

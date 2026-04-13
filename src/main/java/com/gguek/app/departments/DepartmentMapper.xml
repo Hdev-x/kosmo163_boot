@@ -10,10 +10,25 @@
 	<!-- 쿼리 태그 -->
 	<!-- ID : DAO에서 사용할 메서드명을 ID로 작성 -->
 	<!-- 컬럼명과 resultType의 Bean의 Setter 이름이 같은 걸 찾아서 대입 -->
-	<select id="list"
+	
+	<select id="getCount" resultType="Long">
+	SELECT COUNT(DEPARTMENT_NO) FROM TB_DEPARTMENT
+	</select>
+	
+	<select id="list" parameterType="java.util.Map"
 		resultType="DepartmentDTO">
-		SELECT *
-		FROM TB_DEPARTMENT
+		SELECT * 
+		FROM
+		(
+			SELECT ROWNUM R, T.* 
+			FROM 
+			(
+				SELECT *
+				FROM TB_DEPARTMENT
+				ORDER BY DEPARTMENT_NO DESC
+			) T
+		)
+		WHERE R BETWEEN #{begin} AND #{end}
 	</select>
 
 	<select id="detail"
