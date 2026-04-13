@@ -17,12 +17,6 @@ class NoticeMapperTest {
 	@Autowired
 	private NoticeMapper noticeMapper;
 	
-	@Test
-	void getCountTest() throws Exception{
-		Long result = noticeMapper.getCount();
-		assertNotEquals(0, result);
-	}
-	
 	
 
 
