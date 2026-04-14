@@ -1,6 +1,8 @@
 package com.gguek.app.board.notice.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +19,6 @@ public class NoticeDTO {
 	private String professorNo;
 	private LocalDateTime noticeDate;
 	private Long noticeViews;
-
+	private List<NoticeFileDTO> list;
+ 
 }

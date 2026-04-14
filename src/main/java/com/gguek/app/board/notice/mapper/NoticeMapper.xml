@@ -10,6 +10,34 @@
 	<!-- 쿼리 태그 -->
 	<!-- ID : DAO에서 사용할 메서드명을 ID로 작성 -->
 	<!-- 컬럼명과 resultType의 Bean의 Setter 이름이 같은 걸 찾아서 대입 -->
+
+	<!-- File start -->
+	<insert id="createFile" parameterType="NoticeFileDTO">
+
+		INSERT INTO TB_NOTICEFILE
+		(
+		FILE_NO,
+		FILE_NAME,
+		ORIGIN_NAME,
+		NOTICE_NO
+		)
+		VALUES
+		(
+		NOTICE_NO.NEXTVAL,
+		#{fileName},
+		#{originName},
+		#{noticeNo}
+		)
+
+	</insert>
+
+
+
+
+
+
+	<!-- File End -->
+
 	<sql id="search">
 		WHERE
 		<choose>
@@ -19,6 +47,23 @@
 		</choose>
 		LIKE '%' || #{search} || '%'
 	</sql>
+
+	<!-- detail -->
+
+	<select id="deatil" parameterType="NoticeDTO"
+		resultType="NoticeDTO">
+		SELECT
+		*
+		FROM
+		TB_NOTICE
+		WHERE
+		NOTICE_NO = #{noticeNo}
+	</select>
+
+
+
+
+
 
 	<select id="getCount" resultType="Long" parameterType="Pager2">
 		SELECT COUNT(NOTICE_NO) FROM TB_NOTICE
@@ -41,27 +86,53 @@
 		WHERE R BETWEEN #{first} AND #{last}
 	</select>
 
-	<select id="detail" resultType="NoticeDTO"
+	<select id="detail" resultMap="detailResult"
 		parameterType="NoticeDTO">
-		SELECT
-		*
-		FROM
-		TB_NOTICE
-		WHERE
-		NOTICE_NO = #{noticeNo}
+		SELECT *
+		FROM TB_NOTICE tn
+			LEFT JOIN
+			TB_NOTICEFILE tn2
+			USING(NOTICE_NO)
+		WHERE NOTICE_NO = #{noticeNo}
 	</select>
+	
+	<resultMap type="NoticeDTO" id="detailResult">
+	<!-- ID => Primary Key -->
+	<id column="NOTICE_NO" property="noticeNo"/>
+	<!-- 그외 나머지 -->
+	<result column="NOTICE_TITLE" property="noticeTitle"/>
+	<result column="NOTICE_CONTENTS" property="noticeContents"/>
+	<result column="PROFESSOR_NO" property="professorNo"/>
+	<result column="NOTICE_DATE" property="noticeDate"/>
+	<result column="NOTICE_VIEWS" property="noticeViews"/>
+
+	
+	<!-- 1:N -->
+	<collection property="list" ofType="NoticeFileDTO">
+		<id column="FILE_NO" property="fileNo"/>
+		<result column="FILE_NAME" property="fileName"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+	</collection>
+	
+	</resultMap>
 
 	<insert id="create" parameterType="NoticeDTO">
+		<selectKey order="BEFORE" resultType="Long"
+			keyProperty="noticeNo">
+			SELECT NOTICE_NO.NEXTVAL FROM DUAL
+		</selectKey>
 		INSERT INTO
-		TB_NOTICE(
+		TB_NOTICE
+		(
 		NOTICE_NO,
 		NOTICE_TITLE,
 		NOTICE_CONTENTS,
 		PROFESSOR_NO
 		)
 		<!-- /* NOTICE_DATE와 NOTICE_VIEWS는 DB의 DEFAULT 설정을 따르도록 생략 */ -->
-		VALUES(
-		NOTICE_NO.NEXTVAL,
+		VALUES
+		(
+		#{noticeNo},
 		#{noticeTitle},
 		#{noticeContents},
 		#{professorNo}

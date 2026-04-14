@@ -25,11 +25,11 @@
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800 font-weight-bold">
-							<i class="fas fa-list-ul mr-2"></i>학과 목록
+							<i class="fas fa-list-ul mr-2"></i>공지사항
 						</h1>
 						<a href="./create"
 							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-							<i class="fas fa-plus fa-sm text-white-50 mr-1"></i> 새 학과 등록
+							<i class="fas fa-plus fa-sm text-white-50 mr-1"></i> 글쓰기
 						</a>
 					</div>
 
@@ -37,7 +37,7 @@
 
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">NOTICE List</h6>
+							<h6 class="m-0 font-weight-bold text-primary">NOTICE LIST</h6>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -56,7 +56,7 @@
 										<c:forEach items="${list}" var="d">
 											<tr>
 												<td>${d.noticeNo}</td>
-												<td><a href="./detail?departmentNo=${d.noticeNo}"
+												<td><a href="./detail?noticeNo=${d.noticeNo}"
 													class="text-decoration-none font-weight-bold">
 														${d.noticeTitle} </a></td>
 												<td>${d.professorNo}</td>

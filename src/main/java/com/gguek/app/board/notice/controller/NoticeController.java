@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gguek.app.board.notice.dto.NoticeDTO;
 import com.gguek.app.board.notice.service.NoticeService;
@@ -22,6 +23,13 @@ public class NoticeController {
 
 	@Autowired
 	private NoticeService noticeService;
+	
+	@GetMapping("detail")
+	public String detail(NoticeDTO noticeDTO, Model model) throws Exception {
+		noticeDTO  = noticeService.detail(noticeDTO);
+		model.addAttribute("d", noticeDTO);
+		return "board/detail";
+	}
 
 	@GetMapping("list")
 	public String list(Pager2 pager2, Model model) throws Exception {
@@ -32,14 +40,18 @@ public class NoticeController {
 	}
 	
 	@GetMapping("create")
-	public void create() {
+	public String create() {
+		return "board/create";
 	}
 	
 	@PostMapping("create")
-	public String create(NoticeDTO noticeDTO) throws Exception{
-		int result = noticeService.create(noticeDTO);
-		System.out.println("희망하는 값 : 1, 결과값 :"+result);
-		return "redirect:list";
+	public String create(NoticeDTO noticeDTO, @RequestParam("attach") MultipartFile [] attach) throws Exception{
+//		System.out.println(attach.getOriginalFilename());
+//		System.out.println(attach.getBytes());
+		int result = noticeService.create(noticeDTO, attach);
+//		System.out.println("희망하는 값 : 1, 결과값 :"+result);
+		
+		return "redirect:./list";
 	}
 	
 	

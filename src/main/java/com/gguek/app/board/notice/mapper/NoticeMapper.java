@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gguek.app.board.notice.dto.NoticeDTO;
+import com.gguek.app.board.notice.dto.NoticeFileDTO;
 import com.gguek.app.page.Pager;
 import com.gguek.app.page.Pager2;
 
@@ -14,6 +15,9 @@ import com.gguek.app.page.Pager2;
 public interface NoticeMapper {
 	
 	//public abstract 생략 가능
+	
+	//createFile
+	int createFile(NoticeFileDTO noticeFileDTO) throws Exception;
 	
 	//getCount
 	Long getCount(Pager2 pager2) throws Exception;
