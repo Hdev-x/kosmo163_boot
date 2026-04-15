@@ -97,7 +97,7 @@ public class NoticeService {
 		NoticeFileDTO noticeFileDTO = new NoticeFileDTO();
 		noticeFileDTO.setFileName(fileName);
 		noticeFileDTO.setOriginName(m.getOriginalFilename());
-		noticeFileDTO.setNoticeNo(noticeDTO.getNoticeNo());
+		noticeFileDTO.setBoardNo(noticeDTO.getBoardNo());
 		result = noticeMapper.createFile(noticeFileDTO);
 		
 		}

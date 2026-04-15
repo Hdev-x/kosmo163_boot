@@ -24,7 +24,7 @@ class NoticeMapperTest {
 	@Test
 	void detailTest() throws Exception{
 		NoticeDTO noticeDTO = new NoticeDTO();
-		noticeDTO.setNoticeNo(161L);
+		noticeDTO.setBoardNo(161L);
 		
 		noticeDTO = noticeMapper.detail(noticeDTO);
 		log.info("Map : {}", noticeDTO);

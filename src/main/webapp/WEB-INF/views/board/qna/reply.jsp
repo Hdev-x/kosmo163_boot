@@ -30,7 +30,7 @@
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800 font-weight-bold">
-							<i class="fas fa-plus-circle mr-2"></i>공지 등록
+							<i class="fas fa-plus-circle mr-2"></i>질문 등록
 						</h1>
 					</div>
 
@@ -38,10 +38,11 @@
 						<div class="col">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">공지사항 작성</h6>
+									<h6 class="m-0 font-weight-bold text-primary">Q&A 작성</h6>
 								</div>
 								<div class="card-body">
-									<form action="./create" method="post" enctype="multipart/form-data">
+									<form action="./reply" method="post" enctype="multipart/form-data">
+									<input type="hidden" name="boardNo" value="${qnaDTO.boardNo}">
 										<div class="form-group">
 											<label for="title" class="font-weight-bold">제목 </label> <input
 												type="text" class="form-control" id="title"

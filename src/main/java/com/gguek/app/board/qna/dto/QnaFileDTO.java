@@ -1,4 +1,4 @@
-package com.gguek.app.board.notice.dto;
+package com.gguek.app.board.qna.dto;
 
 import com.gguek.app.files.dto.FileDTO;
 
@@ -9,7 +9,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class NoticeFileDTO extends FileDTO {
+public class QnaFileDTO extends FileDTO{
 	private Long boardNo;
-
 }

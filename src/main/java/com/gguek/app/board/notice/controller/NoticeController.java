@@ -35,7 +35,7 @@ public class NoticeController {
 	public String list(Pager2 pager2, Model model) throws Exception {
 		List<NoticeDTO> ar = noticeService.list(pager2);
 		model.addAttribute("list", ar);
-		model.addAttribute("pager", pager2);
+		model.addAttribute("pager2", pager2);
 		return "board/list";
 	}
 	

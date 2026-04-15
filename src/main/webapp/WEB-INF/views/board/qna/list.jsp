@@ -26,7 +26,7 @@
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
 						<h1 class="h3 mb-0 text-gray-800 font-weight-bold">
-							<i class="fas fa-list-ul mr-2"></i>공지사항
+							<i class="fas fa-list-ul mr-2"></i>질문답변게시판
 						</h1>
 						<a href="./create"
 							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -61,7 +61,9 @@
 												<td class="text-left pl-5"><a
 													href="./detail?boardNo=${d.boardNo}"
 													class="text-decoration-none font-weight-bold text-dark">
-														${d.boardTitle} </a></td>
+														<c:forEach begin="1" end="${d.boardDepth}">--
+														</c:forEach> ${d.boardTitle}
+												</a></td>
 
 												<td>${d.boardWriter}</td>
 												<td>${fn:substring(d.boardDate, 0, 10)}</td>
@@ -73,7 +75,6 @@
 							</div>
 						</div>
 					</div>
-
 
 					<div></div>
 

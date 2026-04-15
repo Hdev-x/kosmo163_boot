@@ -1,8 +1,9 @@
 package com.gguek.app.board.notice.dto;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
+
+import com.gguek.app.board.BoardDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,14 +12,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class NoticeDTO {
+public class NoticeDTO extends BoardDTO{
 	
-	private Long noticeNo;
-	private String noticeTitle;
-	private String noticeContents;
-	private String professorNo;
-	private LocalDateTime noticeDate;
-	private Long noticeViews;
 	private List<NoticeFileDTO> list;
  
 }

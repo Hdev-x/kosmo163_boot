@@ -19,14 +19,14 @@
 		FILE_NO,
 		FILE_NAME,
 		ORIGIN_NAME,
-		NOTICE_NO
+		BOARD_NO
 		)
 		VALUES
 		(
 		NOTICE_NO.NEXTVAL,
 		#{fileName},
 		#{originName},
-		#{noticeNo}
+		#{boardNo}
 		)
 
 	</insert>
@@ -41,32 +41,52 @@
 	<sql id="search">
 		WHERE
 		<choose>
-			<when test="kind=='v2'">PROFESSOR_NO</when>
-			<when test="kind=='v3'">NOTICE_CONTENTS</when>
-			<otherwise>NOTICE_TITLE</otherwise>
+			<when test="kind=='v2'">BOARD_WRITER</when>
+			<when test="kind=='v3'">BOARD_CONTENTS</when>
+			<otherwise>BOARD_TITLE</otherwise>
 		</choose>
 		LIKE '%' || #{search} || '%'
 	</sql>
 
-	<!-- detail -->
 
-	<select id="deatil" parameterType="NoticeDTO"
-		resultType="NoticeDTO">
-		SELECT
-		*
-		FROM
-		TB_NOTICE
-		WHERE
-		NOTICE_NO = #{noticeNo}
+
+	<!-- detail -->
+	<select id="detail" resultMap="detailResult"
+		parameterType="NoticeDTO">
+		SELECT *
+		FROM TB_NOTICE tn
+		LEFT JOIN
+		TB_NOTICEFILE tn2
+		USING(BOARD_NO)
+		WHERE BOARD_NO = #{boardNo}
 	</select>
 
+	<resultMap type="NoticeDTO" id="detailResult">
+		<!-- ID => Primary Key -->
+		<id column="BOARD_NO" property="boardNo" />
+		<!-- 그외 나머지 -->
+		<result column="BOARD_TITLE" property="boardTitle" />
+		<result column="BOARD_CONTENTS" property="boardContents" />
+		<result column="BOARD_WRITER" property="boardWriter" />
+		<result column="BOARD_DATE" property="boardDate" />
+		<result column="BOARD_VIEWS" property="boardViews" />
+
+
+		<!-- 1:N -->
+		<collection property="list" ofType="NoticeFileDTO">
+			<id column="FILE_NO" property="fileNo" />
+			<result column="FILE_NAME" property="fileName" />
+			<result column="ORIGIN_NAME" property="originName" />
+		</collection>
+
+	</resultMap>
 
 
 
 
 
 	<select id="getCount" resultType="Long" parameterType="Pager2">
-		SELECT COUNT(NOTICE_NO) FROM TB_NOTICE
+		SELECT COUNT(BOARD_NO) FROM TB_NOTICE
 		<include refid="search"></include>
 	</select>
 
@@ -80,62 +100,33 @@
 		SELECT *
 		FROM TB_NOTICE
 		<include refid="search"></include>
-		ORDER BY NOTICE_NO DESC
+		ORDER BY BOARD_NO DESC
 		) T
 		)
 		WHERE R BETWEEN #{first} AND #{last}
 	</select>
 
-	<select id="detail" resultMap="detailResult"
-		parameterType="NoticeDTO">
-		SELECT *
-		FROM TB_NOTICE tn
-			LEFT JOIN
-			TB_NOTICEFILE tn2
-			USING(NOTICE_NO)
-		WHERE NOTICE_NO = #{noticeNo}
-	</select>
-	
-	<resultMap type="NoticeDTO" id="detailResult">
-	<!-- ID => Primary Key -->
-	<id column="NOTICE_NO" property="noticeNo"/>
-	<!-- 그외 나머지 -->
-	<result column="NOTICE_TITLE" property="noticeTitle"/>
-	<result column="NOTICE_CONTENTS" property="noticeContents"/>
-	<result column="PROFESSOR_NO" property="professorNo"/>
-	<result column="NOTICE_DATE" property="noticeDate"/>
-	<result column="NOTICE_VIEWS" property="noticeViews"/>
-
-	
-	<!-- 1:N -->
-	<collection property="list" ofType="NoticeFileDTO">
-		<id column="FILE_NO" property="fileNo"/>
-		<result column="FILE_NAME" property="fileName"/>
-		<result column="ORIGIN_NAME" property="originName"/>
-	</collection>
-	
-	</resultMap>
 
 	<insert id="create" parameterType="NoticeDTO">
 		<selectKey order="BEFORE" resultType="Long"
-			keyProperty="noticeNo">
+			keyProperty="boardNo">
 			SELECT NOTICE_NO.NEXTVAL FROM DUAL
 		</selectKey>
 		INSERT INTO
 		TB_NOTICE
 		(
-		NOTICE_NO,
-		NOTICE_TITLE,
-		NOTICE_CONTENTS,
-		PROFESSOR_NO
+		BOARD_NO,
+		BOARD_TITLE,
+		BOARD_CONTENTS,
+		BOARD_WRITER
 		)
 		<!-- /* NOTICE_DATE와 NOTICE_VIEWS는 DB의 DEFAULT 설정을 따르도록 생략 */ -->
 		VALUES
 		(
-		#{noticeNo},
-		#{noticeTitle},
-		#{noticeContents},
-		#{professorNo}
+		#{boardNo},
+		#{boardTitle},
+		#{boardContents},
+		#{boardWriter}
 		)
 	</insert>
 
